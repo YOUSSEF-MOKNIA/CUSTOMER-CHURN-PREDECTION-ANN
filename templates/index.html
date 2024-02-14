@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Churn Prediction</title>
+  </head>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f0f0f0;
+      }
+      h1 {
+        text-align: center;
+        padding: 20px;
+        color: #333;
+      }
+      #churn-prediction-form {
+        width: 80%;
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #fff;
+        border-radius: 4px;
+        padding: 20px;
+        box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+      }
+      #churn-prediction-form label {
+        display: block;
+        margin-bottom: 5px;
+      }
+      #churn-prediction-form input,
+      #churn-prediction-form select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+      }
+      #churn-prediction-form button {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-radius: 4px;
+        background-color: #007BFF;
+        color: #fff;
+        cursor: pointer;
+      }
+      #churn-prediction-form button:hover {
+        background-color: #0056b3;
+      }
+      #prediction-result {
+        width: 80%;
+        max-width: 600px;
+        margin: 20px auto;
+        padding: 20px;
+        text-align: center;
+        border-radius: 4px;
+        background-color: #fff;
+        box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+      }
+    </style>
+  <body>
+    <h1>Churn Prediction</h1>
+    <form id="churn-prediction-form">
+      <label for="gender">Gender:</label>
+      <select name="gender" id="gender">
+        <option value="Female">Female</option>
+        <option value="Male">Male</option>
+      </select><br>
+      <label for="senior_citizen">Senior Citizen:</label>
+      <select name="senior_citizen" id="senior_citizen">
+        <option value="0">No</option>
+        <option value="1">Yes</option>
+      </select><br>
+      <label for="partner">Partner:</label>
+      <select name="partner" id="partner">
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select><br>
+      <label for="dependents">Dependents:</label>
+      <select name="dependents" id="dependents">
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select><br>
+      <!-- Add input fields for other features -->
+      <label for="tenure">Tenure:</label>
+      <input type="number" name="tenure" id="tenure" step="any"><br>
+      <label for="phone_service">Phone Service:</label>
+      <select name="phone_service" id="phone_service">
+        <option value="Yes">Yes</option>  
+        <option value="No">No</option>
+      </select><br>
+      <label for="multiple_lines">Multiple Lines:</label>
+      <select name="multiple_lines" id="multiple_lines">
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select><br>
+      <label for="internet_service">Internet Service:</label>
+      <select name="internet_service" id="internet_service">
+        <option value="DSL">DSL</option>
+        <option value="Fiber optic">Fiber optic</option>
+        <option value="No">No</option>
+      </select><br>
+      <label for="online_security">Online Security:</label>
+      <select name="online_security" id="online_security">
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select><br>
+      <label for="online_backup">Online Backup:</label>
+      <select name="online_backup" id="online_backup">
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select><br>
+      <label for="device_protection">Device Protection:</label>
+      <select name="device_protection" id="device_protection">
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select><br>
+      <label for="tech_support">Tech Support:</label>
+      <select name="tech_support" id="tech_support">
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select><br>
+      <label for="streaming_tv">Streaming TV:</label>
+      <select name="streaming_tv" id="streaming_tv">
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select><br>
+      <label for="streaming_movies">Streaming Movies:</label>
+      <select name="streaming_movies" id="streaming_movies">
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select><br>
+      <label for="contract">Contract:</label>
+      <select name="contract" id="contract">
+        <option value="Month-to-month">Month-to-month</option>
+        <option value="One year">One year</option>
+        <option value="Two year">Two year</option>
+      </select><br>
+      <label for="paperless_billing">Paperless Billing:</label>
+      <select name="paperless_billing" id="paperless_billing">
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select><br>
+      <label for="payment_method">Payment Method:</label>
+      <select name="payment_method" id="payment_method">
+        <option value="Electronic check">Electronic check</option>
+        <option value="Mailed check">Mailed check</option>
+        <option value="Bank transfer (automatic)">Bank transfer (automatic)</option>
+        <option value="Credit card (automatic)">Credit card (automatic)</option>
+      </select><br>
+      <label for="monthly_charges">Monthly Charges:</label>
+      <input type="number" name="monthly_charges" id="monthly_charges" step="any"><br>
+      <label for="total_charges">Total Charges:</label>
+      <input type="number" name="total_charges" id="total_charges" step="any"><br>
+          <button type="submit">Predict Churn</button>
+    </form>
+    <div id="prediction-result"></div>
+    <script>
+      document
+        .getElementById("churn-prediction-form")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+          let formData = {
+            gender: document.getElementById("gender").value,
+            SeniorCitizen: document.getElementById("senior_citizen").value,
+            Partner: document.getElementById("partner").value,
+            Dependents: document.getElementById("dependents").value,
+            tenure: document.getElementById("tenure").value,
+            PhoneService: document.getElementById("phone_service").value,
+            MultipleLines: document.getElementById("multiple_lines").value,
+            OnlineSecurity: document.getElementById("online_security").value,
+            OnlineBackup: document.getElementById("online_backup").value,
+            DeviceProtection:
+              document.getElementById("device_protection").value,
+            TechSupport: document.getElementById("tech_support").value,
+            StreamingTV: document.getElementById("streaming_tv").value,
+            StreamingMovies: document.getElementById("streaming_movies").value,
+            PaperlessBilling:
+              document.getElementById("paperless_billing").value,
+            MonthlyCharges: document.getElementById("monthly_charges").value,
+            TotalCharges: document.getElementById("total_charges").value,
+          };
+
+          // Process 'Contract' feature
+          let Contract = document.getElementById("contract").value;
+          if (Contract == "One year") {
+            formData["Contract_One_year"] = 1;
+            formData["Contract_Two_year"] = 0;
+          } else if (Contract == "Two year") {
+            formData["Contract_One_year"] = 0;
+            formData["Contract_Two_year"] = 1;
+          } else {
+            formData["Contract_One_year"] = 0;
+            formData["Contract_Two_year"] = 0;
+          }
+
+          // Process 'InternetService' feature
+          let InternetService =
+            document.getElementById("internet_service").value;
+          if (InternetService == "Fiber optic") {
+            formData["InternetService_Fiber_optic"] = 1;
+            formData["InternetService_No"] = 0;
+          } else if (InternetService == "No") {
+            formData["InternetService_Fiber_optic"] = 0;
+            formData["InternetService_No"] = 1;
+          } else {
+            formData["InternetService_Fiber_optic"] = 0;
+            formData["InternetService_No"] = 0;
+          }
+
+          // Process 'PaymentMethod' feature
+          let PaymentMethod = document.getElementById("payment_method").value;
+          if (PaymentMethod == "Electronic check") {
+            formData["PaymentMethod_Credit_card_automatic"] = 0;
+            formData["PaymentMethod_Electronic_check"] = 1;
+            formData["PaymentMethod_Mailed_check"] = 0;
+          } else if (PaymentMethod == "Mailed check") {
+            formData["PaymentMethod_Credit_card_automatic"] = 0;
+            formData["PaymentMethod_Electronic_check"] = 0;
+            formData["PaymentMethod_Mailed_check"] = 1;
+          } else if (PaymentMethod == "Credit card (automatic)") {
+            formData["PaymentMethod_Credit_card_automatic"] = 1;
+            formData["PaymentMethod_Electronic_check"] = 0;
+            formData["PaymentMethod_Mailed_check"] = 0;
+          } else {
+            formData["PaymentMethod_Credit_card_automatic"] = 0;
+            formData["PaymentMethod_Electronic_check"] = 0;
+            formData["PaymentMethod_Mailed_check"] = 0;
+          }
+          // console.log(formData);
+          fetch("/predict", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ features: formData }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              let churn = 0;
+              if (data.prediction > 0.5) {
+                churn = "The user will leave";
+              } else {
+                churn = "The user wil not leave";
+              }
+              document.getElementById("prediction-result").innerText =
+                "Churn Prediction: " + churn;
+            });
+        });
+    </script>
+  </body>
+</html>
